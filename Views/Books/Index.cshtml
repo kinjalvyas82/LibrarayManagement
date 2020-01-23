@@ -1,0 +1,102 @@
+﻿@model IEnumerable<LibraryManagement.Models.LibraryBooks>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<br />
+<br />
+
+<h2>Library Books List</h2>
+
+@if(Session["UserName"] != null)
+{
+    @Html.Label("Welcome : " + Session["UserName"] + " to library page")
+}
+
+<br />
+<br />
+@using (Html.BeginForm("Index", "Books", FormMethod.Get))
+{
+
+    <b>Search by:</b><br />
+    @Html.RadioButton("searchby", "BookName")<text>Book Name </text>
+    @Html.RadioButton("searchby", "AuthorName")<text> Author Name</text>
+    @Html.RadioButton("searchby", "ISBN")<text> ISBN</text>
+
+    @Html.TextBox("searching")
+}
+
+
+<input type="submit" value="Search" />
+
+<table class="table table-bordered table-striped table-responsive">
+
+
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ISBNID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AuthorName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Year)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Abstract)
+        </th>
+        <th></th>
+    </tr>
+    @if (Model.Count() == 0)
+    {
+        <tr>
+            <td colspan="3" style="color:red">
+                No Match Any document
+            </td>
+        </tr>
+
+    }
+    else
+
+    {
+
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBNID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuthorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Abstract)
+                </td>
+                <td>
+                    @Html.ActionLink("RequestBook", "RequestBook", new { BookID = item.BookID, UserName = Session["UserName"] })
+                </td>
+            </tr>
+        }
+    }
+
+
+    @Html.ActionLink("To add new books", "CreateBooks")
+
+</table>
+

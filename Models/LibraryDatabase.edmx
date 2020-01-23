@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LibraryDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BookInventory">
+          <Key>
+            <PropertyRef Name="Inventory_ID" />
+          </Key>
+          <Property Name="Inventory_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookID" Type="int" Nullable="false" />
+          <Property Name="LibraryCopy_ID" Type="int" Nullable="false" />
+          <Property Name="Avaliable" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Inventory_Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CheckOut">
+          <Key>
+            <PropertyRef Name="CheckOut_ID" />
+          </Key>
+          <Property Name="CheckOut_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Inventory_ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CheckOut_Date" Type="datetime" Nullable="false" />
+          <Property Name="Return_Date" Type="datetime" Nullable="false" />
+          <Property Name="Actual_Return_Date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="LibraryBooks">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar(max)" Nullable="false" />
+          <Property Name="ISBNID" Type="varchar(max)" Nullable="false" />
+          <Property Name="AuthorName" Type="varchar(max)" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Category" Type="varchar(max)" Nullable="false" />
+          <Property Name="Abstract" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LibraryUsers">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="AccessLevel" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__BookInven__BookD__267ABA7A">
+          <End Role="LibraryBooks" Type="Self.LibraryBooks" Multiplicity="1" />
+          <End Role="BookInventory" Type="Self.BookInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LibraryBooks">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="BookInventory">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CheckOut__Invent__73BA3083">
+          <End Role="BookInventory" Type="Self.BookInventory" Multiplicity="1" />
+          <End Role="CheckOut" Type="Self.CheckOut" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BookInventory">
+              <PropertyRef Name="Inventory_ID" />
+            </Principal>
+            <Dependent Role="CheckOut">
+              <PropertyRef Name="Inventory_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CheckOut__Invent__74AE54BC">
+          <End Role="BookInventory" Type="Self.BookInventory" Multiplicity="1" />
+          <End Role="CheckOut" Type="Self.CheckOut" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BookInventory">
+              <PropertyRef Name="Inventory_ID" />
+            </Principal>
+            <Dependent Role="CheckOut">
+              <PropertyRef Name="Inventory_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CheckOut__UserID__245D67DE">
+          <End Role="LibraryUsers" Type="Self.LibraryUsers" Multiplicity="1" />
+          <End Role="CheckOut" Type="Self.CheckOut" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LibraryUsers">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="CheckOut">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LibraryDatabaseModelStoreContainer">
+          <EntitySet Name="BookInventory" EntityType="Self.BookInventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CheckOut" EntityType="Self.CheckOut" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LibraryBooks" EntityType="Self.LibraryBooks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LibraryUsers" EntityType="Self.LibraryUsers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BookInven__BookD__267ABA7A" Association="Self.FK__BookInven__BookD__267ABA7A">
+            <End Role="LibraryBooks" EntitySet="LibraryBooks" />
+            <End Role="BookInventory" EntitySet="BookInventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CheckOut__Invent__73BA3083" Association="Self.FK__CheckOut__Invent__73BA3083">
+            <End Role="BookInventory" EntitySet="BookInventory" />
+            <End Role="CheckOut" EntitySet="CheckOut" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CheckOut__Invent__74AE54BC" Association="Self.FK__CheckOut__Invent__74AE54BC">
+            <End Role="BookInventory" EntitySet="BookInventory" />
+            <End Role="CheckOut" EntitySet="CheckOut" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CheckOut__UserID__245D67DE" Association="Self.FK__CheckOut__UserID__245D67DE">
+            <End Role="LibraryUsers" EntitySet="LibraryUsers" />
+            <End Role="CheckOut" EntitySet="CheckOut" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LibraryDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BookInventory">
+          <Key>
+            <PropertyRef Name="Inventory_ID" />
+          </Key>
+          <Property Name="Inventory_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookID" Type="Int32" Nullable="false" />
+          <Property Name="LibraryCopy_ID" Type="Int32" Nullable="false" />
+          <Property Name="Avaliable" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Inventory_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="LibraryBooks" Relationship="Self.FK__BookInven__BookD__267ABA7A" FromRole="BookInventory" ToRole="LibraryBooks" />
+          <NavigationProperty Name="CheckOut" Relationship="LibraryDatabaseModel.FK__CheckOut__Invent__73BA3083" FromRole="BookInventory" ToRole="CheckOut" />
+          </EntityType>
+        <EntityType Name="LibraryBooks">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ISBNID" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AuthorName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Category" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Abstract" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="BookInventory" Relationship="Self.FK__BookInven__BookD__267ABA7A" FromRole="LibraryBooks" ToRole="BookInventory" />
+        </EntityType>
+        <Association Name="FK__BookInven__BookD__267ABA7A">
+          <End Role="LibraryBooks" Type="Self.LibraryBooks" Multiplicity="1" />
+          <End Role="BookInventory" Type="Self.BookInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LibraryBooks">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="BookInventory">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LibraryDatabaseEntities8" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BookInventory" EntityType="Self.BookInventory" />
+          <EntitySet Name="LibraryBooks" EntityType="Self.LibraryBooks" />
+          <AssociationSet Name="FK__BookInven__BookD__267ABA7A" Association="Self.FK__BookInven__BookD__267ABA7A">
+            <End Role="LibraryBooks" EntitySet="LibraryBooks" />
+            <End Role="BookInventory" EntitySet="BookInventory" />
+          </AssociationSet>
+          <EntitySet Name="CheckOut" EntityType="LibraryDatabaseModel.CheckOut" />
+          <EntitySet Name="LibraryUsers" EntityType="LibraryDatabaseModel.LibraryUsers" />
+          <AssociationSet Name="FK__CheckOut__Invent__73BA3083" Association="LibraryDatabaseModel.FK__CheckOut__Invent__73BA3083">
+            <End Role="BookInventory" EntitySet="BookInventory" />
+            <End Role="CheckOut" EntitySet="CheckOut" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CheckOut__Invent__74AE54BC" Association="LibraryDatabaseModel.FK__CheckOut__Invent__74AE54BC">
+            <End Role="BookInventory" EntitySet="BookInventory" />
+            <End Role="CheckOut" EntitySet="CheckOut" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CheckOut__UserID__245D67DE" Association="LibraryDatabaseModel.FK__CheckOut__UserID__245D67DE">
+            <End Role="LibraryUsers" EntitySet="LibraryUsers" />
+            <End Role="CheckOut" EntitySet="CheckOut" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="CheckOut">
+          <Key>
+            <PropertyRef Name="CheckOut_ID" />
+          </Key>
+          <Property Name="CheckOut_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Inventory_ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CheckOut_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Return_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Actual_Return_Date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="BookInventory" Relationship="LibraryDatabaseModel.FK__CheckOut__Invent__73BA3083" FromRole="CheckOut" ToRole="BookInventory" />
+          <NavigationProperty Name="LibraryUsers" Relationship="LibraryDatabaseModel.FK__CheckOut__UserID__245D67DE" FromRole="CheckOut" ToRole="LibraryUsers" />
+        </EntityType>
+        <EntityType Name="LibraryUsers">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="AccessLevel" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CheckOut" Relationship="LibraryDatabaseModel.FK__CheckOut__UserID__245D67DE" FromRole="LibraryUsers" ToRole="CheckOut" />
+        </EntityType>
+        <Association Name="FK__CheckOut__Invent__73BA3083">
+          <End Type="LibraryDatabaseModel.BookInventory" Role="BookInventory" Multiplicity="1" />
+          <End Type="LibraryDatabaseModel.CheckOut" Role="CheckOut" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BookInventory">
+              <PropertyRef Name="Inventory_ID" />
+            </Principal>
+            <Dependent Role="CheckOut">
+              <PropertyRef Name="Inventory_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CheckOut__Invent__74AE54BC">
+          <End Type="LibraryDatabaseModel.BookInventory" Role="BookInventory" Multiplicity="1" />
+          <End Type="LibraryDatabaseModel.CheckOut" Role="CheckOut" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BookInventory">
+              <PropertyRef Name="Inventory_ID" />
+            </Principal>
+            <Dependent Role="CheckOut">
+              <PropertyRef Name="Inventory_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CheckOut__UserID__245D67DE">
+          <End Type="LibraryDatabaseModel.LibraryUsers" Role="LibraryUsers" Multiplicity="1" />
+          <End Type="LibraryDatabaseModel.CheckOut" Role="CheckOut" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LibraryUsers">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="CheckOut">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LibraryDatabaseModelStoreContainer" CdmEntityContainer="LibraryDatabaseEntities8">
+          <EntitySetMapping Name="BookInventory">
+            <EntityTypeMapping TypeName="LibraryDatabaseModel.BookInventory">
+              <MappingFragment StoreEntitySet="BookInventory">
+                <ScalarProperty Name="Inventory_ID" ColumnName="Inventory_ID" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="LibraryCopy_ID" ColumnName="LibraryCopy_ID" />
+                <ScalarProperty Name="Avaliable" ColumnName="Avaliable" />
+                <ScalarProperty Name="Inventory_Date" ColumnName="Inventory_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LibraryBooks">
+            <EntityTypeMapping TypeName="LibraryDatabaseModel.LibraryBooks">
+              <MappingFragment StoreEntitySet="LibraryBooks">
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ISBNID" ColumnName="ISBNID" />
+                <ScalarProperty Name="AuthorName" ColumnName="AuthorName" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Abstract" ColumnName="Abstract" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CheckOut">
+            <EntityTypeMapping TypeName="LibraryDatabaseModel.CheckOut">
+              <MappingFragment StoreEntitySet="CheckOut">
+                <ScalarProperty Name="Actual_Return_Date" ColumnName="Actual_Return_Date" />
+                <ScalarProperty Name="Return_Date" ColumnName="Return_Date" />
+                <ScalarProperty Name="CheckOut_Date" ColumnName="CheckOut_Date" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Inventory_ID" ColumnName="Inventory_ID" />
+                <ScalarProperty Name="CheckOut_ID" ColumnName="CheckOut_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LibraryUsers">
+            <EntityTypeMapping TypeName="LibraryDatabaseModel.LibraryUsers">
+              <MappingFragment StoreEntitySet="LibraryUsers">
+                <ScalarProperty Name="AccessLevel" ColumnName="AccessLevel" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LibraryDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BookInventory">
+    <Key>
+      <PropertyRef Name="Inventory_ID" />
+    </Key>
+    <Property Name="Inventory_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookID" Type="Int32" Nullable="false" />
+    <Property Name="LibraryCopy_ID" Type="Int32" Nullable="false" />
+    <Property Name="Avaliable" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Inventory_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="LibraryBooks" Relationship="Self.FK__BookInven__BookD__267ABA7A" FromRole="BookInventory" ToRole="LibraryBooks" />
+    <NavigationProperty Name="CheckOut" Relationship="Self.FK__CheckOut__Invent__73BA3083" FromRole="BookInventory" ToRole="CheckOut" />
+  </EntityType>
+  <EntityType Name="CheckOut">
+    <Key>
+      <PropertyRef Name="CheckOut_ID" />
+    </Key>
+    <Property Name="CheckOut_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="Inventory_ID" Type="Int32" Nullable="false" />
+    <Property Name="CheckOut_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Return_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Actual_Return_Date" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="BookInventory" Relationship="Self.FK__CheckOut__Invent__73BA3083" FromRole="CheckOut" ToRole="BookInventory" />
+    <NavigationProperty Name="LibraryUsers" Relationship="Self.FK__CheckOut__UserID__71D1E811" FromRole="CheckOut" ToRole="LibraryUsers" />
+  </EntityType>
+  <EntityType Name="LibraryBooks">
+    <Key>
+      <PropertyRef Name="BookID" />
+    </Key>
+    <Property Name="BookID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ISBNID" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AuthorName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Year" Type="Int32" Nullable="false" />
+    <Property Name="Category" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Abstract" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="BookInventory" Relationship="Self.FK__BookInven__BookD__267ABA7A" FromRole="LibraryBooks" ToRole="BookInventory" />
+  </EntityType>
+  <EntityType Name="LibraryUsers">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="AccessLevel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="CheckOut" Relationship="Self.FK__CheckOut__UserID__71D1E811" FromRole="LibraryUsers" ToRole="CheckOut" />
+    <NavigationProperty Name="Login" Relationship="Self.FK__Login__UserID__75A278F5" FromRole="LibraryUsers" ToRole="Login" />
+  </EntityType>
+  <EntityType Name="Login">
+    <Key>
+      <PropertyRef Name="LoginID" />
+    </Key>
+    <Property Name="LoginID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="LibraryUsers" Relationship="Self.FK__Login__UserID__75A278F5" FromRole="Login" ToRole="LibraryUsers" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK__BookInven__BookD__267ABA7A">
+    <End Role="LibraryBooks" Type="Self.LibraryBooks" Multiplicity="1" />
+    <End Role="BookInventory" Type="Self.BookInventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LibraryBooks">
+        <PropertyRef Name="BookID" />
+      </Principal>
+      <Dependent Role="BookInventory">
+        <PropertyRef Name="BookID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CheckOut__Invent__73BA3083">
+    <End Role="BookInventory" Type="Self.BookInventory" Multiplicity="1" />
+    <End Role="CheckOut" Type="Self.CheckOut" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BookInventory">
+        <PropertyRef Name="Inventory_ID" />
+      </Principal>
+      <Dependent Role="CheckOut">
+        <PropertyRef Name="Inventory_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CheckOut__Invent__74AE54BC">
+    <End Role="BookInventory" Type="Self.BookInventory" Multiplicity="1" />
+    <End Role="CheckOut" Type="Self.CheckOut" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BookInventory">
+        <PropertyRef Name="Inventory_ID" />
+      </Principal>
+      <Dependent Role="CheckOut">
+        <PropertyRef Name="Inventory_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CheckOut__UserID__71D1E811">
+    <End Role="LibraryUsers" Type="Self.LibraryUsers" Multiplicity="1" />
+    <End Role="CheckOut" Type="Self.CheckOut" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LibraryUsers">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CheckOut">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CheckOut__UserID__72C60C4A">
+    <End Role="LibraryUsers" Type="Self.LibraryUsers" Multiplicity="1" />
+    <End Role="CheckOut" Type="Self.CheckOut" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LibraryUsers">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CheckOut">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Login__UserID__75A278F5">
+    <End Role="LibraryUsers" Type="Self.LibraryUsers" Multiplicity="1" />
+    <End Role="Login" Type="Self.Login" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LibraryUsers">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Login">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LibraryDatabaseEntities7" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BookInventory" EntityType="Self.BookInventory" />
+    <EntitySet Name="CheckOut" EntityType="Self.CheckOut" />
+    <EntitySet Name="LibraryBooks" EntityType="Self.LibraryBooks" />
+    <EntitySet Name="LibraryUsers" EntityType="Self.LibraryUsers" />
+    <EntitySet Name="Login" EntityType="Self.Login" />
+    <AssociationSet Name="FK__BookInven__BookD__267ABA7A" Association="Self.FK__BookInven__BookD__267ABA7A">
+      <End Role="LibraryBooks" EntitySet="LibraryBooks" />
+      <End Role="BookInventory" EntitySet="BookInventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CheckOut__Invent__73BA3083" Association="Self.FK__CheckOut__Invent__73BA3083">
+      <End Role="BookInventory" EntitySet="BookInventory" />
+      <End Role="CheckOut" EntitySet="CheckOut" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CheckOut__Invent__74AE54BC" Association="Self.FK__CheckOut__Invent__74AE54BC">
+      <End Role="BookInventory" EntitySet="BookInventory" />
+      <End Role="CheckOut" EntitySet="CheckOut" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CheckOut__UserID__71D1E811" Association="Self.FK__CheckOut__UserID__71D1E811">
+      <End Role="LibraryUsers" EntitySet="LibraryUsers" />
+      <End Role="CheckOut" EntitySet="CheckOut" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CheckOut__UserID__72C60C4A" Association="Self.FK__CheckOut__UserID__72C60C4A">
+      <End Role="LibraryUsers" EntitySet="LibraryUsers" />
+      <End Role="CheckOut" EntitySet="CheckOut" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Login__UserID__75A278F5" Association="Self.FK__Login__UserID__75A278F5">
+      <End Role="LibraryUsers" EntitySet="LibraryUsers" />
+      <End Role="Login" EntitySet="Login" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

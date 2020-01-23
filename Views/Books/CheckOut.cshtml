@@ -1,0 +1,78 @@
+﻿@model LibraryManagement.Models.Extended.Checkouts
+
+@{
+    /**/
+
+    ViewBag.Title = "CheckOut";
+}
+<br />
+<br />
+<h2>Check Out</h2>
+<br />
+
+
+@if (Session["UserName"] != null)
+{
+
+    @Html.Label("Welcome : " + Session["UserName"] + " to library page")
+
+}
+
+<br />
+<br />
+
+
+@using (Html.BeginForm())
+{
+
+    <div class="form-horizontal">
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Inventory_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.Label(Session["InventoryID"].ToString())
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookInventory.BookID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.Label(Session["BookID"].ToString())
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookInventory.LibraryCopy_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.Label(Session["LibraryCopy"].ToString())
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CheckOut_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.Label(DateTime.Today.ToString())
+
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="CheckOut" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+

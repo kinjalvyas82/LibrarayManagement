@@ -1,0 +1,22 @@
+﻿@model LibraryManagement.Models.CheckOut
+
+@{
+    ViewBag.Title = "EndPage";
+}
+
+
+
+
+
+@if (Session["UserName"] != null)
+{
+   <h2> @Html.Label(Session["UserName"] + " has library id as " + Session["LibraryCopy"])</h2>
+}
+
+
+
+
+    <p>
+
+        @Html.ActionLink("Back to List", "Index")
+    </p>
